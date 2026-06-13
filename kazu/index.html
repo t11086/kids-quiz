@@ -186,12 +186,15 @@
     }
 
     /* いくつかな？ */
-    .emoji-display {
-      display: flex; flex-wrap: wrap;
-      gap: 5px; justify-content: center; align-items: center;
-      max-width: 290px;
-    }
     .emoji-item { font-size: 38px; line-height: 1; }
+
+    /* サイコロ配置 (いくつかな？) */
+    .dice-grid {
+      display: grid; gap: 5px;
+      justify-content: center; align-items: center;
+    }
+    .dice-dot { line-height: 1; text-align: center; display: block; }
+    .dice-dot.empty { visibility: hidden; }
 
     /* たしざん */
     .add-display {
@@ -638,6 +641,20 @@
 ═══════════════════════════════ */
 const GAME_LEN = 6;
 const COUNT_EMOJIS = ['🍎','🌟','🐶','🦋','🍩','🚗','🌸','🐱','🍓','🎈','🍌','🐸','⚽','🎀','🐝'];
+
+// サイコロ配置: [cols, fontSize, cells(1=絵文字 0=空)]
+const DICE = {
+  1:  [3, 46, [0,0,0, 0,1,0, 0,0,0]],
+  2:  [3, 42, [0,0,1, 0,0,0, 1,0,0]],
+  3:  [3, 42, [0,0,1, 0,1,0, 1,0,0]],
+  4:  [3, 40, [1,0,1, 0,0,0, 1,0,1]],
+  5:  [3, 38, [1,0,1, 0,1,0, 1,0,1]],
+  6:  [3, 36, [1,0,1, 1,0,1, 1,0,1]],
+  7:  [3, 34, [1,0,1, 1,1,1, 1,0,1]],
+  8:  [4, 30, [1,1,1,1, 1,1,1,1]],
+  9:  [3, 32, [1,1,1, 1,1,1, 1,1,1]],
+  10: [5, 26, [1,1,1,1,1, 1,1,1,1,1]],
+};
 const NUM_WORDS    = ['','いち','に','さん','よん','ご','ろく','なな','はち','きゅう','じゅう'];
 const CONFETTI_COLORS = ['#FF8C00','#FFE66D','#4ECDC4','#6BCB77','#A78BFA','#FB923C','#22D3EE'];
 
@@ -857,10 +874,12 @@ function renderCard(q) {
   card.style.animation = 'none'; card.offsetHeight; card.style.animation = '';
 
   if (q.type === 'count') {
-    const items = Array(q.n).fill(q.emoji)
-      .map(e => `<span class="emoji-item">${e}</span>`).join('');
+    const [cols, size, cells] = DICE[q.n];
+    const dots = cells.map(filled =>
+      `<span class="dice-dot${filled ? '' : ' empty'}" style="font-size:${size}px">${q.emoji}</span>`
+    ).join('');
     card.innerHTML = `
-      <div class="emoji-display">${items}</div>
+      <div class="dice-grid" style="grid-template-columns:repeat(${cols},auto)">${dots}</div>
       <div class="q-label">いくつ？</div>`;
 
   } else if (q.type === 'add') {
