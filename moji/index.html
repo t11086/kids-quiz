@@ -114,19 +114,21 @@
     }
 
     /* mode selection buttons */
-    .mode-row { display: flex; gap: 16px; width: 100%; }
+    .mode-row { display: flex; gap: 4px; width: 100%; }
 
     .btn-mode {
       flex: 1;
+      min-width: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 10px; padding: 26px 10px;
+      gap: 8px; padding: 16px 4px;
       border: none; border-radius: 26px;
       cursor: pointer; font-family: inherit;
+      overflow: hidden;
       transition: transform .12s, box-shadow .12s;
     }
-    .btn-mode .mchar  { font-size: 66px; font-weight: 900; color: #fff; line-height: 1; }
-    .btn-mode .mlabel { font-size: 16px; font-weight: 900; color: rgba(255,255,255,.95); letter-spacing: 1px; }
+    .btn-mode .mchar  { font-size: 44px; font-weight: 900; color: #fff; line-height: 1; }
+    .btn-mode .mlabel { font-size: 12px; font-weight: 900; color: rgba(255,255,255,.95); white-space: nowrap; word-break: keep-all; }
 
     /* ひらがな = ピンク、カタカナ = ブルー (常に固定色) */
     .btn-mode.hira {
@@ -335,7 +337,8 @@
     }
     @media (max-width: 350px) {
       .choice-btn { font-size: 48px; min-height: 90px; }
-      .btn-mode .mchar { font-size: 56px; }
+      .btn-mode .mchar { font-size: 40px; }
+      .btn-mode .mlabel { font-size: 12px; }
     }
 
     /* ════════════════════════════════════
@@ -558,8 +561,6 @@
     <div class="start-title">もじ<br>クイズ</div>
     <span class="title-deco b">🌟</span>
   </div>
-  <div class="start-sub">なにをやりたい？</div>
-
   <button class="btn-learn" id="btn-learn">
     <span style="font-size:26px">📖</span> もじをおぼえる
   </button>
@@ -1135,7 +1136,9 @@ function startGame(mode, customPool = null) {
 
   buildDots();
   showScreen('game-screen');
-  document.getElementById('q-emoji').textContent = isEn ? 'ABC' : (selectedMode === 'katakana' ? 'カタカナ' : 'ひらがな');
+  const introEmoji = document.getElementById('q-emoji');
+  introEmoji.textContent = isEn ? 'ABC' : (selectedMode === 'katakana' ? 'カタカナ' : 'ひらがな');
+  introEmoji.style.fontSize = '52px';
   document.getElementById('q-word').innerHTML = '';
   document.getElementById('choices').innerHTML = '';
   sfxStart();
@@ -1160,7 +1163,9 @@ function renderQuestion() {
   const card = document.getElementById('q-card');
   card.style.animation = 'none'; card.offsetHeight; card.style.animation = '';
 
-  document.getElementById('q-emoji').textContent = q.e;
+  const qEmoji = document.getElementById('q-emoji');
+  qEmoji.textContent = q.e;
+  qEmoji.style.fontSize = '';
 
   /* 単語表示 (先頭文字をハイライト) */
   const wordEl = document.getElementById('q-word');
