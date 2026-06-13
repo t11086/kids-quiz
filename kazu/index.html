@@ -116,23 +116,39 @@
     .btn-hub:active { color: #A07830; border-color: #A07830; }
 
     .btn-mode {
-      width: 100%; display: flex; align-items: center;
-      gap: 16px; padding: 18px 22px;
+      width: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; padding: 18px 16px;
       border: none; border-radius: 24px;
       cursor: pointer; font-family: inherit;
       transition: transform .12s, box-shadow .12s;
     }
-    .btn-mode .micon  { font-size: 46px; font-weight: 900; color: #fff; line-height: 1; min-width: 56px; text-align: center; }
-    .btn-mode .mtext  { display: flex; flex-direction: column; align-items: flex-start; }
-    .btn-mode .mlabel { font-size: 22px; font-weight: 900; color: #fff; }
-    .btn-mode .mdesc  { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.85); margin-top: 2px; }
-
     .btn-mode.count { background: linear-gradient(150deg,#FF8C00,#FFD700); box-shadow: 0 7px 0 #CC6600, 0 12px 28px rgba(255,140,0,.4); }
     .btn-mode.add   { background: linear-gradient(150deg,#8B5CF6,#A78BFA); box-shadow: 0 7px 0 #6D28D9, 0 12px 28px rgba(139,92,246,.4); }
     .btn-mode.seq   { background: linear-gradient(150deg,#06B6D4,#22D3EE); box-shadow: 0 7px 0 #0891B2, 0 12px 28px rgba(6,182,212,.4); }
     .btn-mode.count:active { transform: translateY(6px); box-shadow: 0 1px 0 #CC6600; }
     .btn-mode.add:active   { transform: translateY(6px); box-shadow: 0 1px 0 #6D28D9; }
     .btn-mode.seq:active   { transform: translateY(6px); box-shadow: 0 1px 0 #0891B2; }
+
+    /* ボタン内プレビュー */
+    .btn-preview {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; flex-wrap: wrap;
+    }
+    .prev-emoji { font-size: 30px; line-height: 1; }
+    .prev-op    { font-size: 26px; font-weight: 900; color: rgba(255,255,255,.9); }
+    .prev-num   { font-size: 40px; font-weight: 900; color: #fff; line-height: 1; }
+    .prev-q     { font-size: 36px; font-weight: 900; color: rgba(255,255,255,.85); }
+    .prev-tile  {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 900; color: #fff;
+    }
+    .prev-tile.blank {
+      background: rgba(255,255,255,.08);
+      border: 2.5px dashed rgba(255,255,255,.7);
+    }
 
     /* ════ GAME SCREEN ════ */
     #game-screen { justify-content: flex-start; padding-top: 32px; gap: 16px; }
@@ -201,11 +217,13 @@
       display: flex; align-items: center; justify-content: center;
       gap: 8px; flex-wrap: wrap;
     }
+    .add-group-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
     .add-group {
       display: flex; flex-wrap: wrap; gap: 3px;
       justify-content: center; max-width: 110px;
     }
     .add-group .emoji-item { font-size: 30px; }
+    .add-num    { font-size: 30px; font-weight: 900; color: var(--prim); line-height: 1; }
     .add-op     { font-size: 32px; font-weight: 900; color: var(--prim); line-height: 1; flex-shrink: 0; }
     .add-result { font-size: 46px; font-weight: 900; color: #CCC; line-height: 1; }
 
@@ -378,8 +396,9 @@
 
     /* ════ LEARN-ADD BUTTON (start screen) ════ */
     .btn-learn-add {
-      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 16px 0;
+      width: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      padding: 18px 16px;
       background: linear-gradient(140deg, #F59E0B, #FBBF24);
       border: none; border-radius: 22px;
       font-size: 20px; font-weight: 900; font-family: inherit; color: #fff;
@@ -540,38 +559,55 @@
 
   <div class="mode-col">
     <button class="btn-mode count" id="btn-count">
-      <span class="micon">🔢</span>
-      <span class="mtext">
-        <span class="mlabel">いくつかな？</span>
-        <span class="mdesc">えをかぞえて こたえよう</span>
-      </span>
+      <div class="btn-preview">
+        <span class="prev-emoji">🍎</span>
+        <span class="prev-emoji">🍎</span>
+        <span class="prev-emoji">🍎</span>
+        <span class="prev-emoji">🍎</span>
+        <span class="prev-op">＝</span>
+        <span class="prev-q">？</span>
+      </div>
     </button>
+
+    <button class="btn-learn-add" id="btn-learn-add">
+      <div class="btn-preview">
+        <span class="prev-emoji">🍎</span>
+        <span class="prev-emoji">🍎</span>
+        <span class="prev-op">＋</span>
+        <span class="prev-emoji">🍎</span>
+        <span class="prev-op">＝</span>
+        <span class="prev-q">？</span>
+      </div>
+    </button>
+
     <button class="btn-mode add" id="btn-add">
-      <span class="micon">＋</span>
-      <span class="mtext">
-        <span class="mlabel">たしざん</span>
-        <span class="mdesc">ふたつのかずをあわせよう</span>
-      </span>
+      <div class="btn-preview">
+        <span class="prev-num">2</span>
+        <span class="prev-op">＋</span>
+        <span class="prev-num">3</span>
+        <span class="prev-op">＝</span>
+        <span class="prev-q">？</span>
+      </div>
     </button>
+
     <button class="btn-mode seq" id="btn-seq">
-      <span class="micon">…</span>
-      <span class="mtext">
-        <span class="mlabel">かずならべ</span>
-        <span class="mdesc">かくれたかずをみつけよう</span>
-      </span>
+      <div class="btn-preview">
+        <span class="prev-tile">1</span>
+        <span class="prev-tile">2</span>
+        <span class="prev-tile blank">？</span>
+        <span class="prev-tile">4</span>
+        <span class="prev-tile">5</span>
+      </div>
     </button>
   </div>
-  <button class="btn-learn-add" id="btn-learn-add">
-    <span style="font-size:24px">📖</span> たしざんを　おぼえる
-  </button>
 </div>
 
 <!-- ══ LEARN-ADD ══ -->
 <div class="screen" id="learn-add-screen">
   <div class="learn-top-bar">
-    <button class="btn-home-small" id="btn-home-learn">🏠</button>
     <div class="learn-title-text">＋</div>
     <div class="learn-progress" id="learn-progress">1 / 12</div>
+    <button class="btn-home-small" id="btn-home-learn">🏠</button>
   </div>
 
   <div class="learn-card">
@@ -590,7 +626,7 @@
   </div>
 
   <button class="btn-tap" id="btn-tap">👆</button>
-  <button class="btn-learn-next" id="btn-learn-next">▶</button>
+  <button class="btn-learn-next" id="btn-learn-next">つぎへ</button>
 </div>
 
 <!-- ══ GAME ══ -->
@@ -887,9 +923,15 @@ function renderCard(q) {
     const gB = Array(q.b).fill(q.emojiB).map(e => `<span class="emoji-item">${e}</span>`).join('');
     card.innerHTML = `
       <div class="add-display">
-        <div class="add-group">${gA}</div>
+        <div class="add-group-wrap">
+          <div class="add-group">${gA}</div>
+          <div class="add-num">${q.a}</div>
+        </div>
         <div class="add-op">＋</div>
-        <div class="add-group">${gB}</div>
+        <div class="add-group-wrap">
+          <div class="add-group">${gB}</div>
+          <div class="add-num">${q.b}</div>
+        </div>
         <div class="add-op">＝</div>
         <div class="add-result">？</div>
       </div>`;
@@ -900,9 +942,7 @@ function renderCard(q) {
         ? `<div class="seq-blank">？</div>`
         : `<div class="seq-num">${n}</div>`
     ).join('');
-    card.innerHTML = `
-      <div class="q-label" style="color:#888;font-size:18px">かくれたかずは？</div>
-      <div class="seq-display">${seqHtml}</div>`;
+    card.innerHTML = `<div class="seq-display">${seqHtml}</div>`;
   }
 }
 
@@ -1002,6 +1042,24 @@ function checkAnswer(btn) {
   const mascot = document.getElementById('mascot-game');
 
   document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+
+  const color = ok ? '#6BCB77' : '#FFB347';
+  if (questions[qIdx].type === 'seq') {
+    const blank = document.querySelector('.seq-blank');
+    if (blank) {
+      blank.textContent = currentAnswer;
+      blank.style.borderStyle = 'solid';
+      blank.style.borderColor = color;
+      blank.style.color       = color;
+    }
+  }
+  if (questions[qIdx].type === 'add') {
+    const result = document.querySelector('.add-result');
+    if (result) {
+      result.textContent = currentAnswer;
+      result.style.color = color;
+    }
+  }
 
   if (ok) {
     score++;
@@ -1183,7 +1241,9 @@ function setupLearnQuestion() {
   total.textContent = '';
   total.classList.remove('show');
 
-  document.getElementById('btn-tap').disabled = false;
+  const tapBtn = document.getElementById('btn-tap');
+  tapBtn.textContent = learnEmoji;
+  tapBtn.disabled = false;
   document.getElementById('btn-learn-next').classList.remove('show');
 }
 
