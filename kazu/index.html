@@ -379,12 +379,6 @@
       0%, 100% { background-position: 0% 50%; }
       50%       { background-position: 100% 50%; }
     }
-    @keyframes bgFloat {
-      0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-      10%  { opacity: 0.75; }
-      90%  { opacity: 0.55; }
-      100% { transform: translateY(-108vh) rotate(420deg); opacity: 0; }
-    }
     @keyframes sparkleOrbit {
       0%, 100% { transform: translateY(0) rotate(-15deg) scale(1); }
       50%       { transform: translateY(-14px) rotate(15deg) scale(1.3); }
@@ -973,7 +967,6 @@ function showScreen(id) {
 
 function startGame(mode) {
   if (mode) selectedMode = mode;
-  stopBgParticles();
   initVoices();
 
   document.body.className =
@@ -1201,7 +1194,6 @@ function goHome() {
   hideOverlays();
   document.body.className = '';
   showScreen('start-screen');
-  startBgParticles();
 }
 document.getElementById('btn-home-game').addEventListener('click', () => {
   if (confirm('ホームにもどりますか？')) goHome();
@@ -1306,28 +1298,7 @@ document.getElementById('choices').addEventListener('click', e => {
 /* ═══════════════════════════════════════════
    BACKGROUND PARTICLES (スタート画面)
 ═══════════════════════════════════════════ */
-let bgParticleInterval = null;
-const BG_FLOATS = ['⭐','✨','🔢','🎈','💫','🌟','🌈','🎀','🍭','❤️','🎊','🎯'];
-
-function startBgParticles() {
-  stopBgParticles();
-  bgParticleInterval = setInterval(() => {
-    const el = document.createElement('span');
-    el.textContent = BG_FLOATS[Math.floor(Math.random() * BG_FLOATS.length)];
-    const size = 16 + Math.random() * 22;
-    const left = 4 + Math.random() * 92;
-    const dur  = 4.5 + Math.random() * 3.5;
-    el.style.cssText = `position:fixed;left:${left}%;bottom:-44px;font-size:${size}px;pointer-events:none;z-index:0;animation:bgFloat ${dur}s ease-out forwards;`;
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), (dur + 0.5) * 1000);
-  }, 650);
-}
-function stopBgParticles() {
-  if (bgParticleInterval) { clearInterval(bgParticleInterval); bgParticleInterval = null; }
-}
-
 if (typeof speechSynthesis !== 'undefined') initVoices();
-startBgParticles();
 
 detectAudioFiles().then(ok => {
   useAudioFiles = ok;
