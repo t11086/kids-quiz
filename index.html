@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>クイズであそぼう！</title>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic Pro', 'BIZ UDPGothic', sans-serif;
+      background: #FFFBF5;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100%;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    /* background blobs */
+    body::before, body::after {
+      content: ''; position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+    }
+    body::before {
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(255,107,157,.12) 0%, transparent 70%);
+      top: -100px; right: -80px;
+      animation: blob1 9s ease-in-out infinite;
+    }
+    body::after {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,200,50,.12) 0%, transparent 70%);
+      bottom: -80px; left: -60px;
+      animation: blob2 11s ease-in-out infinite;
+    }
+    @keyframes blob1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,20px) scale(1.1)} }
+    @keyframes blob2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-25px) scale(1.1)} }
+
+    .hub {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 28px; padding: 36px 24px;
+      width: 100%; max-width: 440px;
+    }
+
+    .mascot {
+      font-size: 100px; line-height: 1;
+      animation: bounce 2.4s ease-in-out infinite;
+      filter: drop-shadow(0 6px 16px rgba(255,200,50,.5));
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0) rotate(-4deg); }
+      50%      { transform: translateY(-20px) rotate(4deg); }
+    }
+
+    .hub-title {
+      font-size: 46px; font-weight: 900; line-height: 1.2; text-align: center;
+      background: linear-gradient(135deg, #FF4F90, #FF9558, #FFD700, #FF6BAC);
+      background-size: 300% 300%;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 4s ease-in-out infinite;
+    }
+    @keyframes shine { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+    .hub-sub {
+      font-size: 17px; font-weight: 700; color: #C0A8B8; letter-spacing: 1px;
+      margin-top: -16px;
+    }
+
+    .cards {
+      display: flex; flex-direction: column; gap: 18px; width: 100%;
+    }
+
+    .card {
+      display: flex; align-items: center; gap: 20px;
+      padding: 24px 28px; border-radius: 28px;
+      text-decoration: none;
+      transition: transform .12s, box-shadow .12s;
+      position: relative; overflow: hidden;
+    }
+    .card:active { transform: translateY(5px); }
+
+    .card.moji {
+      background: linear-gradient(135deg, #FF6BAC, #FF9558);
+      box-shadow: 0 8px 0 #C03060, 0 14px 32px rgba(255,107,157,.4);
+    }
+    .card.moji:active { box-shadow: 0 2px 0 #C03060; }
+
+    .card.kazu {
+      background: linear-gradient(135deg, #FF9900, #FFD700);
+      box-shadow: 0 8px 0 #CC6600, 0 14px 32px rgba(255,165,0,.4);
+    }
+    .card.kazu:active { box-shadow: 0 2px 0 #CC6600; }
+
+    .card-icon {
+      font-size: 64px; font-weight: 900; color: #fff;
+      line-height: 1; flex-shrink: 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+
+    .card-text { display: flex; flex-direction: column; gap: 4px; }
+    .card-title { font-size: 30px; font-weight: 900; color: #fff; letter-spacing: 1px; }
+    .card-sub   { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.85); letter-spacing: 1px; }
+
+    /* sparkle decoration */
+    .card::after {
+      content: '✨'; position: absolute; right: 20px; top: 16px;
+      font-size: 24px; opacity: .6;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+    .card.kazu::after { content: '⭐'; animation-delay: .8s; }
+    @keyframes sparkle { 0%,100%{transform:scale(1) rotate(0)} 50%{transform:scale(1.3) rotate(15deg)} }
+  </style>
+</head>
+<body>
+  <div class="hub">
+    <span class="mascot">🐥</span>
+    <div class="hub-title">クイズで<br>あそぼう！</div>
+    <div class="hub-sub">すきなクイズをえらんでね</div>
+    <div class="cards">
+      <a href="moji/" class="card moji">
+        <span class="card-icon">あ</span>
+        <div class="card-text">
+          <span class="card-title">もじクイズ</span>
+          <span class="card-sub">ひらがな・カタカナ・えいご</span>
+        </div>
+      </a>
+      <a href="kazu/" class="card kazu">
+        <span class="card-icon">🔢</span>
+        <div class="card-text">
+          <span class="card-title">かずクイズ</span>
+          <span class="card-sub">すうじ・かぞえかた</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
