@@ -118,7 +118,7 @@
     .btn-mode {
       width: 100%; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 8px; padding: 14px 10px;
+      gap: 8px; padding: 14px 10px; min-height: 88px;
       border: none; border-radius: 24px;
       cursor: pointer; font-family: inherit;
       transition: transform .12s, box-shadow .12s;
@@ -398,7 +398,7 @@
     .btn-learn-add {
       width: 100%; display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 8px;
-      padding: 14px 10px;
+      padding: 14px 10px; min-height: 88px;
       background: linear-gradient(140deg, #F59E0B, #FBBF24);
       border: none; border-radius: 22px;
       font-size: 20px; font-weight: 900; font-family: inherit; color: #fff;
@@ -992,13 +992,24 @@ function startGame(mode) {
   document.getElementById('score-pill').textContent = '⭐ 0';
   document.getElementById('choices').innerHTML = '';
 
-  const INTRO = { count: ['🔢', 'いくつかな？'], add: ['＋', 'たしざん'], seq: ['…', 'かずならべ'] };
-  const [icon, label] = INTRO[selectedMode];
-  document.getElementById('q-card').innerHTML = `
-    <div style="font-size:72px;line-height:1">${icon}</div>
-    <div style="font-size:34px;font-weight:900;color:var(--prim);margin-top:8px">${label}</div>
-    <div style="font-size:20px;font-weight:700;color:#BBB;margin-top:4px">はじめよう！</div>
-  `;
+  const INTRO_HTML = {
+    count: `<div style="display:flex;align-items:center;gap:8px;justify-content:center">
+      <span style="font-size:38px">🍎</span><span style="font-size:38px">🍎</span><span style="font-size:38px">🍎</span>
+      <span style="font-size:30px;font-weight:900;color:var(--prim)">＝</span>
+      <span style="font-size:34px;font-weight:900;color:#CCC">？</span>
+    </div>`,
+    add: `<div style="display:flex;align-items:center;gap:10px;justify-content:center">
+      <span style="font-size:54px;font-weight:900;color:var(--prim)">2</span>
+      <span style="font-size:34px;font-weight:900;color:var(--prim)">＋</span>
+      <span style="font-size:54px;font-weight:900;color:var(--prim)">3</span>
+      <span style="font-size:34px;font-weight:900;color:var(--prim)">＝</span>
+      <span style="font-size:54px;font-weight:900;color:#CCC">？</span>
+    </div>`,
+    seq: `<div style="display:flex;gap:10px;justify-content:center">
+      ${['1','2','？'].map((n,i) => `<div style="width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;${i<2?'background:var(--prim-lt);color:var(--prim);border:2.5px solid var(--prim-a)':'background:#fff;color:#BBB;border:3px dashed var(--prim)'}">${n}</div>`).join('')}
+    </div>`,
+  };
+  document.getElementById('q-card').innerHTML = INTRO_HTML[selectedMode];
 
   sfxStart();
   speakStart();
